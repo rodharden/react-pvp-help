@@ -1,0 +1,3 @@
+export const POKE_REQUEST = "POKE_REQUEST"
+export const POKE_SUCCESS = "POKE_SUCCESS"
+export const POKE_FAILURE = "POKE_FAILURE"
