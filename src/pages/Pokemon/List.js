@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchPokemons } from '../../redux/pokemon/actions'
+import ListStatus from './ListStatus'
 
 function getNumber(id) {
   return "https://www.serebii.net/pokedex-swsh/icon/" + String("000" + id).slice("-3") + ".png";
@@ -17,6 +18,7 @@ function List({ pokeData, fetchPokemons }) {
   ) : (
     <div>
       <h2>Poké List</h2>
+      
       <div>
         {pokeData &&
           pokeData.pokemons &&

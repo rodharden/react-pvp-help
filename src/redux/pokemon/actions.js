@@ -11,10 +11,7 @@ export const fetchPokemons = () => {
     axios
       .get('http://localhost:3001/pokes')
       .then(response => {
-        // response.data is the Pokemons
-        const Pokemons = response.data
-        console.log(Pokemons)
-        dispatch(fetchPokemonsSuccess(Pokemons))
+        dispatch(fetchPokemonsSuccess(response.data))
       })
       .catch(error => {
         // error.message is the error message
