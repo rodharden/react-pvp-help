@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchPokemons } from '../../redux/pokemon/actions'
-import ListStatus from './ListStatus'
+import { fetchPokemonsStats } from '../../redux/pokemon/actionsByStatus'
 
 function getNumber(id) {
   return "https://www.serebii.net/pokedex-swsh/icon/" + String("000" + id).slice("-3") + ".png";
 }
 
-function List({ pokeData, fetchPokemons }) {
+function List({ pokeData, fetchPokemons, pokeDataStatus, fetchPokemonsStats }) {
   useEffect(() => {
     fetchPokemons()
+    fetchPokemonsStats()
   }, [])
   return pokeData.loading ? (
     <h2>Loading</h2>
@@ -18,7 +19,7 @@ function List({ pokeData, fetchPokemons }) {
   ) : (
     <div>
       <h2>Poké List</h2>
-      
+
       <div>
         {pokeData &&
           pokeData.pokemons &&
@@ -29,6 +30,21 @@ function List({ pokeData, fetchPokemons }) {
                 <div>{item.name}</div>
                 <div><img alt="" src={getNumber(item.id)}></img></div>
                 <div><span>{item.id}</span></div>
+                <div>
+                  {pokeDataStatus &&
+                    pokeDataStatus.pokemonStats &&
+                    pokeDataStatus.pokemonStats.length > 0 &&
+                    pokeDataStatus.pokemonStats.filter(pokes => pokes.form === "Normal" && pokes.pokemon_id === "1").then(statsFound => {
+                      return (
+                        <div key={statsFound.id}>
+                          <div>Attack: {statsFound.base_attack}</div>
+                          <div>Defense: {statsFound.base_defense}</div>
+                          <div>Stamina: {statsFound.base_stamina}</div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
             )
           }
@@ -40,13 +56,15 @@ function List({ pokeData, fetchPokemons }) {
 
 const mapStateToProps = state => {
   return {
-    pokeData: state.pokemon
+    pokeData: state.pokemon,
+    pokeDataStatus: state.pokemonStats
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchPokemons: () => dispatch(fetchPokemons())
+    fetchPokemons: () => dispatch(fetchPokemons()),
+    fetchPokemonsStats: () => dispatch(fetchPokemonsStats())
   }
 }
 
